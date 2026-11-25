@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypervisor Ultimate Spoofer - Setup Guide</title>
+    <meta name="description" content="Official setup and usage guide for Hypervisor Ultimate Spoofer. Prevent BSOD and configure your BIOS correctly.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(15, 15, 20, 0.9);
+            --text-main: #e0e0e0;
+            --text-muted: #999;
+            --accent: #00ffcc;
+            --accent-glow: rgba(0, 255, 204, 0.3);
+            --danger: #ff4d4d;
+            --border: #2a2a35;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, var(--bg-color) 80%);
+            overflow-x: hidden;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            box-shadow: 0 0 10px var(--accent);
+            transition: width 0.1s;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 45px;
+            margin: 40px 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 25px;
+        }
+
+        .header h1 {
+            color: var(--accent);
+            font-size: 34px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .warning-box {
+            background: rgba(255, 77, 77, 0.08);
+            border-left: 4px solid var(--danger);
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            animation: pulseWarning 3s infinite alternate;
+        }
+
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 0 0 rgba(255, 77, 77, 0); }
+            100% { box-shadow: 0 0 15px rgba(255, 77, 77, 0.2); }
+        }
+
+        .warning-box h3 {
+            color: var(--danger);
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-box p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .step:hover {
+            transform: translateX(8px);
+            border-color: var(--accent);
+            background: rgba(0, 255, 204, 0.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--accent), #0088ff);
+            color: #000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 22px;
+            margin-right: 25px;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .step-content h3 {
+            margin: 0 0 12px 0;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            margin: 0 0 10px 0;
+            line-height: 1.7;
+            font-size: 15px;
+            color: #b0b0b0;
+        }
+
+        .step-content ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #b0b0b0;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .step-content li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        .danger-highlight {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* Kurtarma Bölümü Özel Tasarımı */
+        .recovery-section {
+            margin-top: 50px;
+            border: 1px dashed var(--danger);
+            background: rgba(255, 77, 77, 0.02);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .recovery-section h2 {
+            color: var(--danger);
+            font-size: 22px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recovery-section p {
+            color: #ccc;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ffcc;
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            user-select: text; /* Kopyalamaya izin ver */
+        }
+
+        .code-comment { color: #666; }
+        .code-warning { color: #ff4d4d; font-weight: bold; }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 25px; margin: 15px; }
+            .header h1 { font-size: 24px; }
+            .step { flex-direction: column; padding: 20px; }
+            .step-number { margin-bottom: 15px; }
+            .recovery-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Hypervisor Ultimate Spoofer</h1>
+            <p>Universal UEFI HWID & TPM Spoofer Guide</p>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ CRITICAL BIOS REQUIREMENTS</h3>
+            <p>Before proceeding, you <strong>MUST</strong> configure your BIOS settings correctly. Failure to do so will result in boot failures or <span class="danger-highlight">Blue Screens (BSOD)</span>. Read the steps below carefully.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3>Disable Secure Boot</h3>
+                <p>Restart your PC and press <strong>Del</strong> or <strong>F2</strong> to enter BIOS. Go to the <strong>Boot/Security</strong> tab and set <span class="highlight">Secure Boot to DISABLED</span>.</p>
+                <p><em>Why? The spoofer patches the bootmgfw.efi file. If Secure Boot is enabled, the motherboard will reject the modified file and fail to boot.</em></p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3>Enable CPU Virtualization</h3>
+                <p>While in BIOS, ensure hardware virtualization is turned ON. The spoofer requires this to load the hypervisor driver without crashing your system.</p>
+                <ul>
+                    <li>Intel CPUs: Enable <strong>Intel Virtualization Technology (VT-x)</strong></li>
+                    <li>AMD CPUs: Enable <strong>SVM Mode (AMD-V)</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3>Run as Administrator</h3>
+                <p>Once your PC has restarted, right-click the loader application and select <strong>"Run as Administrator"</strong>. Wait for the <span class="highlight">"Preparing..."</span> phase to finish. Accept the UAC (User Account Control) prompt when it appears.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h3>Automatic System Preparation</h3>
+                <p>The spoofer automatically applies critical fixes in the background to prevent BSODs:</p>
+                <ul>
+                    <li>Disables Windows Fast Startup & Hibernation.</li>
+                    <li>Resolves Hyper-V / Core Isolation (HVCI) conflicts.</li>
+                    <li>Freezes the Windows Time Service to lock the RTC clock.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h3>Restart & Verify</h3>
+                <p>When the spoofer finishes installing the EFI modules, <strong>restart your computer</strong>. Upon booting back up, your HWID, TPM, and Disk serial numbers will be permanently spoofed at the hypervisor level.</p>
+            </div>
+        </div>
+
+        <!-- EFI KURTARMA BÖLÜMÜ -->
+        <div class="recovery-section">
+            <h2>🚨 IMPORTANT — EFI RECOVERY GUIDE</h2>
+            <p>If something goes wrong (which is highly likely if BIOS settings are ignored), do not fully trust the UNK EFI Spoofer. <strong>DO NOT FORMAT YOUR PC.</strong> The solution is quite simple. Follow the steps below to fix your bootloader.</p>
+            
+            <p><strong>Step 1:</strong> Prepare a Windows installation USB drive and boot your PC from it.</p>
+            <p><strong>Step 2:</strong> When the Windows Setup screen appears, press <strong>SHIFT + F10</strong> to open the Command Prompt (CMD).</p>
+            <p><strong>Step 3:</strong> Enter the following commands sequentially:</p>
+
+            <div class="code-block">
+                diskpart<br>
+                list volume<br><br>
+                <span class="code-comment">:: Find the EFI partition (usually FAT32 format)</span><br>
+                select volume X<br>
+                assign letter=S<br>
+                exit<br><br>
+                <span class="code-comment">:: Rebuild the UEFI boot files</span><br>
+                bcdboot C:\Windows /s S: /f UEFI
+            </div>
+
+            <p style="margin-top: 15px;"><span class="code-warning">IMPORTANT:</span> Replace <strong>X</strong> with the number of your EFI partition. Also, ensure that <code>C:\Windows</code> is the correct drive letter where your Windows is actually installed. Once completed, restart your PC and Windows will boot normally.</p>
+        </div>
+
+        <div class="footer">
+            <p>Hypervisor Ultimate Spoofer &copy; 2026</p>
+            <p>Powered by <span>Unkvisor</span> Core Technology</p>
+        </div>
+    </div>
+
+    <script>
+        window.onscroll = function() { updateProgressBar() };
+
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+    </script>
+</body>
+</html>
